@@ -4,6 +4,24 @@
 
 namespace ftm {
 
+/**
+ * @brief  Algorithm that implements interpolation search in the array.
+ * @param  first iterator to the first element of sequence.
+ * @param  last iterator to element behind the last to examine.
+ * @param  value target element to find.
+ * @param  comp function to compare two elements of type T.
+ *         Is `std::less<T>()` by default.
+ * @retval Iterator to the found element in `[first, last)`, 
+ *         and `last` if the element was not found.
+ * @note   Type `T` must support arithmetic operations such as 
+ *         subtraction and division.
+ * @note   The sequence `[first, last)` is considered to be sorted
+ *         with respect to `comp`.
+ * @note   Time Complexity: `O(log(log n))` for the average case,
+ *         and `O(n)` for the worst case.
+ * @note   This search is best suited for sequences where values
+ *         are uniformly distributed.
+ */
 template <typename RandomIt, typename T, typename Comparator = std::less<T>>
 requires std::random_access_iterator<RandomIt>
 RandomIt interpolation_search(
@@ -11,37 +29,8 @@ RandomIt interpolation_search(
   , RandomIt last
   , const T& value
   , Comparator comp = Comparator{}
-)
-{
-  size_t dist = static_cast<size_t>(std::distance(first, last));
-  
-  if (dist == 0) return last;
+);
 
-  size_t l = 0;
-  size_t r = dist - 1;
-  size_t m;
-
-  RandomIt mid_it;
-  while (r >= l) {
-    if (!comp(first[l], first[r]) && !comp(first[r], first[l])) {
-      if (!comp(first[l], value) && !comp(value, first[l])) {
-        return std::next(first, l);
-      }
-      break;
-    }
-    double coef = (value - first[l]) / static_cast<double>(*(first + r) - *(first + l));
-    if (coef < 0 || coef > 1) break;
-
-    m = static_cast<size_t>(l + (r - l) * coef);
-    mid_it = std::next(first, m);
-    if (comp(*mid_it, value)) {
-      l = m + 1;
-    } else if (comp(value, *mid_it)) {
-      r = (m == 0) ? 0 : m - 1;
-    } else {
-      return mid_it;
-    }
-  }
-  return last;
-}
 } /* ftm */
+
+#include <ftm/algorithm/search/impl/interpolation_search.ipp>

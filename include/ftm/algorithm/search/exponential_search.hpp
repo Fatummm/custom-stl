@@ -1,10 +1,25 @@
 #pragma once
 
 #include <iterator>
-#include <ftm/algorithm/search/binary_search.hpp>
 
 namespace ftm {
 
+/**
+ * @brief  Algorithm that implements exponential search in the array.
+ * @param  first iterator to the first element of sequence.
+ * @param  last iterator to element behind the last to examine.
+ * @param  value target element to find.
+ * @param  comp function to compare two elements of type T.
+ *         Is `std::less<T>()` by default.
+ * @retval Iterator to the found element in `[first, last)`, 
+ *         and `last` if the element was not found.
+ * @note   The sequence `[first, last)` is considered to be sorted
+ *         with respect to `comp`.
+ * @note   Particularly efficient when the target element is near the beginning
+ *         of the sequence, or for unbounded/infinite ranges.
+ * @note   Time Complexity: `O(log i)` for the average case,
+ *         and O(log n) if the element was not found.
+ */
 template <typename RandomIt, typename T, typename Comparator = std::less<T>>
 requires std::random_access_iterator<RandomIt>
 RandomIt exponential_search(
@@ -12,29 +27,8 @@ RandomIt exponential_search(
   , RandomIt last
   , const T& value
   , Comparator comp = Comparator{}
-)
-{
-  size_t dist = static_cast<size_t>(std::distance(first, last));
-
-  if (dist == 0) return last;
-
-  size_t bound = 1;
-  size_t mult_coef = 2;
-
-  if (!comp(*first, value) && !comp(value, *first)) return first;
-
-  while (bound < dist && comp(*std::next(first, bound), value)) {
-    bound *= mult_coef;
-  }
-
-  RandomIt lower = std::next(first, bound / mult_coef);
-  RandomIt upper = (bound < dist) ? std::next(first, bound) : last;
-
-  RandomIt it = binary_search(lower, upper, value, comp);
-  if (it != last && !comp(*it, value) && !comp(value, *it)) {
-    return it;
-  }
-  return last;
-}
+);
 
 } /* ftm */
+
+#include <ftm/algorithm/search/impl/exponential_search.ipp>
