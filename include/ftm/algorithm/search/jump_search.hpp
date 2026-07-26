@@ -1,10 +1,26 @@
 #pragma once
 
-#include <cmath>
 #include <iterator>
 
 namespace ftm {
 
+/**
+ * @brief  Algorithm that implements jump search in the array.
+ * @param  first iterator to the first element of sequence.
+ * @param  last iterator to element behind the last to examine.
+ * @param  value target element to find.
+ * @param  jump_size length of jump. 
+ *         Set to 0 if you want it to be calculated by algorithm.
+ *         Is 0 by default.
+ * @param  comp function to compare two elements of type T.
+ *         Is `std::less<T>()` by default.
+ * @retval Iterator to the found element in `[first, last)`, 
+ *         and `last` if the element was not found.
+ * @note   The sequence `[first, last)` is considered to be sorted
+ *         with respect to `comp`.
+ * @note   Time Complexity: `O(n/m + m)`, where m is jump size.
+ *         If `jump_size` is 0 (default), optimal complexity is `O(sqrt(n))`
+ */
 template <typename RandomIt, typename T, typename Comparator = std::less<T>>
 requires std::random_access_iterator<RandomIt>
 RandomIt jump_search(
@@ -13,37 +29,8 @@ RandomIt jump_search(
   , const T& value
   , size_t jump_size = 0
   , Comparator comp = Comparator{}
-) 
-{
-  size_t dist = static_cast<size_t>(std::distance(first, last));
-  
-  if (dist == 0) return last;
+);
 
-  if (jump_size == 0) {
-    jump_size = static_cast<size_t>(std::sqrt(dist));
-  }
+} /* ftm */
 
-  RandomIt current = first;
-  RandomIt prev = current;
-
-  for (; current != last; ) {
-    prev = current;
-    if (static_cast<size_t>(std::distance(current, last)) <= jump_size) {
-      current = last;
-      break;
-    } else {
-      std::advance(current, jump_size);
-    }
-
-    if (comp(value, *current)) break;
-    else if (!comp(*current, value)) return current;
-  }
-
-  for (; prev < current; ++prev) {
-    if (!comp(*prev, value) && !comp(value, *prev)) return prev;
-  }
-  
-  return last;
-}
-
-}
+#include <ftm/algorithm/search/impl/jump_search.ipp>
