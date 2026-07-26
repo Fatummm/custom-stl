@@ -1,7 +1,16 @@
-add_executable(stl_tests
-    sandbox.cpp
+set(TEST_MODULES
+    search
 )
 
-target_link_libraries(stl_tests PRIVATE custom_stl)
+foreach(module ${TEST_MODULES})
+    set(target_name "stl_${module}_tests")
 
-add_test(NAME AllLibraryTests COMMAND stl_tests)
+    add_executable(${target_name} "test_${module}.cpp")
+
+    target_link_libraries(${target_name} PRIVATE custom_stl)
+
+    string(SUBSTRING ${module} 0 1 FIRST_LETTER)
+    string(TOUPPER ${FIRST_LETTER} FIRST_LETTER_UPPER)
+    string(SUBSTRING ${module} 1 -1 REST_LETTERS)
+    add_test(NAME "${FIRST_LETTER_UPPER}${REST_LETTERS}Tests" COMMAND ${target_name})
+endforeach()
