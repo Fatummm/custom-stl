@@ -9,8 +9,8 @@ RandomIt jump_search(
   RandomIt first
   , RandomIt last
   , const T& value
-  , size_t jump_size
   , Comparator comp
+  , size_t jump_size
 ) 
 {
   size_t dist = static_cast<size_t>(std::distance(first, last));

@@ -27,8 +27,8 @@ RandomIt jump_search(
   RandomIt first
   , RandomIt last
   , const T& value
-  , size_t jump_size = 0
   , Comparator comp = Comparator{}
+  , size_t jump_size = 0
 );
 
 } /* ftm */
