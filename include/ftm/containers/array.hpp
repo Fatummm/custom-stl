@@ -4,9 +4,15 @@
 
 namespace ftm {
 
+template <std::size_t N>
+concept NotZero = N != 0; 
+
 template <typename T, std::size_t Size>
+requires NotZero<Size>
 class array {
 public:
+  class iterator;
+  class const_iterator;
   using value_type             = T;
   using size_type              = std::size_t;
   using difference_type        = std::ptrdiff_t;
@@ -15,14 +21,14 @@ public:
   using pointer                = value_type*;
   using const_pointer          = const value_type*;
   using reverse_iterator       = std::reverse_iterator<iterator>;
-  using const_reverse_iterator = std::reverse_iterator<iterator>;
-  
+  using const_reverse_iterator = std::reverse_iterator<const_iterator>;
+
   // element access
-  reference at(size_t);
-  const_reference at(size_t) const;
+  reference at(std::size_t);
+  const_reference at(std::size_t) const;
   
-  reference operator[](size_t);
-  const_reference operator[](size_t) const noexcept;
+  reference operator[](std::size_t) noexcept;
+  const_reference operator[](std::size_t) const noexcept;
   
   reference front();
   const_reference front() const;
@@ -30,8 +36,8 @@ public:
   reference back();
   const_reference back() const;
   
-  pointer data();
-  const_pointer data() const;
+  pointer data() noexcept;
+  const_pointer data() const noexcept;
 
   // capacity
   constexpr bool empty() const noexcept;
@@ -39,19 +45,19 @@ public:
   constexpr size_type max_size() const noexcept;
 
   // iterators
-  iterator begin() noexcept;
-  const_iterator begin() const noexcept;
-  const_iterator cbegin() const noexcept;
-  reverse_iterator rbegin() noexcept;
-  const_reverse_iterator rbegin() const noexcept;
-  const_reverse_iterator crbegin() const noexcept;
+  constexpr iterator begin() noexcept;
+  constexpr const_iterator begin() const noexcept;
+  constexpr const_iterator cbegin() const noexcept;
+  constexpr reverse_iterator rbegin() noexcept;
+  constexpr const_reverse_iterator rbegin() const noexcept;
+  constexpr const_reverse_iterator crbegin() const noexcept;
 
-  iterator end() noexcept;
-  const_iterator end() const noexcept;
-  const_iterator cend() const noexcept;
-  reverse_iterator rend() noexcept;
-  const_reverse_iterator rend() const noexcept;
-  const_reverse_iterator() crend() const noexcept;
+  constexpr iterator end() noexcept;
+  constexpr const_iterator end() const noexcept;
+  constexpr const_iterator cend() const noexcept;
+  constexpr reverse_iterator rend() noexcept;
+  constexpr const_reverse_iterator rend() const noexcept;
+  constexpr const_reverse_iterator crend() const noexcept;
 
   // iterator class
   class iterator {
@@ -62,33 +68,33 @@ public:
     using pointer           = T*;
     using iterator_category = std::random_access_iterator_tag;
 
-    iterator();
-    explicit iterator(pointer p);
+    constexpr iterator();
+    constexpr explicit iterator(pointer);
 
-    reference operator*() const;
-    pointer operator->() const;
-    reference operator[](difference_type)
+    constexpr reference operator*() const;
+    constexpr pointer operator->() const;
+    constexpr reference operator[](difference_type) const;
 
-    iterator& operator++();
-    iterator operator++(int);
+    constexpr iterator& operator++();
+    constexpr iterator operator++(int);
 
-    iterator& operator--();
-    iterator operator--(int);
+    constexpr iterator& operator--();
+    constexpr iterator operator--(int);
 
-    iterator& operator+=(difference_type);
-    iterator& operator-=(difference_type);
+    constexpr iterator& operator+=(difference_type);
+    constexpr iterator& operator-=(difference_type);
 
-    iterator operator+(difference_type) const;
-    iterator operator-(difference_type) const;
+    constexpr iterator operator+(difference_type) const;
+    constexpr iterator operator-(difference_type) const;
 
-    difference_type operator-(const iterator&) const;
+    constexpr difference_type operator-(const iterator&) const;
 
-    bool operator==(const iterator&);
-    bool operator!=(const iterator&);
-    bool operator<(const iterator&);
-    bool operator>(const iterator&);
-    bool operator<=(const iterator&);
-    bool operator>=(const iterator&);
+    constexpr bool operator==(const iterator&) const;
+    constexpr bool operator!=(const iterator&) const;
+    constexpr bool operator<(const iterator&) const;
+    constexpr bool operator>(const iterator&) const;
+    constexpr bool operator<=(const iterator&) const;
+    constexpr bool operator>=(const iterator&) const;
   private:
     pointer ptr_;
   };
@@ -102,49 +108,51 @@ public:
     using pointer           = const T*;
     using iterator_category = std::random_access_iterator_tag;
 
-    const_iterator();
-    explicit const_iterator(const_pointer);
-    const_iterator(const iterator&);
+    constexpr const_iterator();
+    constexpr explicit const_iterator(const_pointer);
+    constexpr const_iterator(const iterator&);
 
-    const_reference operator*() const;
-    const_pointer operator->() const;
-    const_reference operator[](difference_type) const;
+    constexpr const_reference operator*() const;
+    constexpr const_pointer operator->() const;
+    constexpr const_reference operator[](difference_type) const;
 
-    const_iterator& operator++();
-    const_iterator operator++(int);
+    constexpr const_iterator& operator++();
+    constexpr const_iterator operator++(int);
 
-    const_iterator& operator--();
-    const_iterator operator--(int);
+    constexpr const_iterator& operator--();
+    constexpr const_iterator operator--(int);
 
-    const_iterator& operator+=(difference_type);
-    const_iterator& operator-=(difference_type);
+    constexpr const_iterator& operator+=(difference_type);
+    constexpr const_iterator& operator-=(difference_type);
 
-    const_iterator operator+(difference_type);
-    const_iterator operator-(difference_type);
+    constexpr const_iterator operator+(difference_type) const;
+    constexpr const_iterator operator-(difference_type) const ;
 
-    difference_type operator-(const iterator&);
+    constexpr difference_type operator-(const const_iterator&) const;
 
-    bool operator==(const const_iterator&);
-    bool operator!=(const const_iterator&);
-    bool operator<(const const_iterator&);
-    bool operator>(const const_iterator&);
-    bool operator<=(const const_iterator&);
-    bool operator>=(const const_iterator&);
+    constexpr bool operator==(const const_iterator&) const;
+    constexpr bool operator!=(const const_iterator&) const;
+    constexpr bool operator<(const const_iterator&) const;
+    constexpr bool operator>(const const_iterator&) const;
+    constexpr bool operator<=(const const_iterator&) const;
+    constexpr bool operator>=(const const_iterator&) const;
   private:
     const_pointer ptr_;
   };
-private:
+  
   T arr_[Size];
 };
 
 template <typename T, std::size_t Size>
-typename array<T, Size>::iterator operator+(
+requires NotZero<Size>
+constexpr array<T, Size>::iterator operator+(
   typename array<T, Size>::difference_type n
   , typename array<T, Size>::iterator it
 );
 
 template <typename T, std::size_t Size>
-typename array<T, Size>::const_iterator operator+(
+requires NotZero<Size>
+constexpr array<T, Size>::const_iterator operator+(
   typename array<T, Size>::difference_type n
   , typename array<T, Size>::const_iterator it
 );
@@ -152,3 +160,5 @@ typename array<T, Size>::const_iterator operator+(
 } /* ftm */
 
 #include <ftm/containers/impl/array.ipp>
+#include <ftm/containers/impl/array_iterator.ipp>
+#include <ftm/containers/impl/array_const_iterator.ipp>
