@@ -1,6 +1,11 @@
 #include <ftm/algorithm.hpp>
 #include <vector>
 #include <cassert>
+#include <catch2/catch_test_macros.hpp>
+
+TEST_CASE("Dummy test", "[smoke]") {
+  REQUIRE(true);
+}
 
 template <typename Search>
 void testCommonScenarios(Search search) {
