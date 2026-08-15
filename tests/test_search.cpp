@@ -174,11 +174,3 @@ void testInterpolationSearch() {
     return ftm::interpolation_search(first, last, value);
   });
 }
-
-int main() {
-  testLinearSearch();
-  testJumpSearch();
-  testBinarySearch();
-  testExponentialSearch();
-  testInterpolationSearch();
-}
