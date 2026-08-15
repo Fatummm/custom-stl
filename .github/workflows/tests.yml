@@ -20,7 +20,7 @@ jobs:
       run: >
         cmake -B build -S .
         -DCMAKE_BUILD_TYPE=Release
-        -DBUILD_CUSTOM_STL_TESTS=ON
+        -DENABLE_TESTING=ON
       
     - name: Build tests
       run: cmake --build build --config Release

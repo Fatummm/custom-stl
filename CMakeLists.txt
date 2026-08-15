@@ -13,7 +13,7 @@ else()
     set(DEFAULT_COMPILE_OPTIONS -Wall -Wextra -Werror -Wpedantic)
 endif()
 
-option(BUILD_CUSTOM_STL_TESTS "Build tests for custom-stl" OFF)
+option(ENABLE_TESTING "Build tests for custom-stl" OFF)
 
 add_library(custom_stl INTERFACE)
 add_library(custom_stl::custom_stl ALIAS custom_stl)
@@ -25,7 +25,7 @@ target_include_directories(custom_stl INTERFACE
 
 target_compile_options(custom_stl INTERFACE ${DEFAULT_COMPILE_OPTIONS})
 
-if (BUILD_CUSTOM_STL_TESTS AND PROJECT_IS_TOP_LEVEL)
+if (ENABLE_TESTING AND PROJECT_IS_TOP_LEVEL)
     enable_testing()
     add_subdirectory(tests)
 endif()
