@@ -7,12 +7,13 @@ FetchContent_Declare(
 )
 
 FetchContent_MakeAvailable(Catch2)
-#list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
+list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
 include(CTest)
 include(Catch)
 
 set(TEST_MODULES
     search
+    array
 )
 
 foreach(module ${TEST_MODULES})
@@ -28,5 +29,11 @@ foreach(module ${TEST_MODULES})
     string(SUBSTRING ${module} 0 1 FIRST_LETTER)
     string(TOUPPER ${FIRST_LETTER} FIRST_LETTER_UPPER)
     string(SUBSTRING ${module} 1 -1 REST_LETTERS)
-    catch_discover_tests(${target_name})
+    catch_discover_tests(
+        ${target_name}
+        ADD_TAGS_AS_LABELS
+        )
 endforeach()
+
+add_executable(sandbox "sandbox.cpp")
+target_link_libraries(sandbox PRIVATE custom_stl)
