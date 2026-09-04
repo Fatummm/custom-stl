@@ -3,16 +3,14 @@
 namespace ftm {
 
 template <typename RandomIt, typename T, typename Comparator>
-requires std::random_access_iterator<RandomIt>
-RandomIt binary_search(
-  RandomIt first
-  , RandomIt last
-  , const T& value
-  , Comparator comp
-) 
+  requires std::random_access_iterator<RandomIt>
+RandomIt binary_search(RandomIt first,
+                       RandomIt last,
+                       const T& value,
+                       Comparator comp)
 {
   size_t dist = static_cast<size_t>(std::distance(first, last));
-  
+
   if (dist == 0) return last;
 
   size_t l = 0;
@@ -35,13 +33,11 @@ RandomIt binary_search(
 }
 
 template <typename RandomIt, typename T, typename Comparator>
-requires std::random_access_iterator<RandomIt>
-RandomIt lower_bound(
-  RandomIt first
-  , RandomIt last
-  , const T& value
-  , Comparator comp
-) 
+  requires std::random_access_iterator<RandomIt>
+RandomIt lower_bound(RandomIt first,
+                     RandomIt last,
+                     const T& value,
+                     Comparator comp)
 {
   size_t dist = static_cast<size_t>(std::distance(first, last));
 
@@ -63,13 +59,11 @@ RandomIt lower_bound(
 }
 
 template <typename RandomIt, typename T, typename Comparator>
-requires std::random_access_iterator<RandomIt>
-RandomIt upper_bound(
-  RandomIt first
-  , RandomIt last
-  , const T& value
-  , Comparator comp
-)
+  requires std::random_access_iterator<RandomIt>
+RandomIt upper_bound(RandomIt first,
+                     RandomIt last,
+                     const T& value,
+                     Comparator comp)
 {
   size_t dist = static_cast<size_t>(std::distance(first, last));
 
@@ -90,4 +84,4 @@ RandomIt upper_bound(
   return std::next(first, l);
 }
 
-} /* ftm */
+}  // namespace ftm
