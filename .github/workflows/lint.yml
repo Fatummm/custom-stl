@@ -1,0 +1,26 @@
+name: Lint C++ Code
+
+on:
+  pull_request:
+    branches: ["develop", "cheesedom"]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run cpp-linter
+        uses: cpp-linter/cpp-linter-action@v2.13.3
+        id: linter
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          style: file
+          tidy-checks: file
+          version: 14
+      
+      - name: Fail if there are errors
+        if: steps.linter.outputs.checks-failed > 0
+        run: exit 1
