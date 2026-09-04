@@ -3,12 +3,8 @@
 namespace ftm {
 
 template <typename InputIt, typename T>
-requires std::input_iterator<InputIt>
-InputIt linear_search(
-  InputIt first
-  , InputIt last
-  , const T& value
-) 
+  requires std::input_iterator<InputIt>
+InputIt linear_search(InputIt first, InputIt last, const T& value)
 {
   for (; first != last; ++first) {
     if (*first == value) {
@@ -18,4 +14,4 @@ InputIt linear_search(
   return last;
 }
 
-} /* ftm */
+}  // namespace ftm
