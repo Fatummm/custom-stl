@@ -18,8 +18,9 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
           style: file
-          tidy-checks: file
-          version: 14
+          tidy-checks: ''
+          version: 18
+          extra-args: -std=c++20 -Iinclude
       
       - name: Fail if there are errors
         if: steps.linter.outputs.checks-failed > 0

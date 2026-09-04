@@ -1,16 +1,15 @@
-#include <iterator>
 #include <ftm/algorithm/search/binary_search.hpp>
+
+#include <iterator>
 
 namespace ftm {
 
 template <typename RandomIt, typename T, typename Comparator>
-requires std::random_access_iterator<RandomIt>
-RandomIt exponential_search(
-  RandomIt first
-  , RandomIt last
-  , const T& value
-  , Comparator comp
-)
+  requires std::random_access_iterator<RandomIt>
+RandomIt exponential_search(RandomIt first,
+                            RandomIt last,
+                            const T& value,
+                            Comparator comp)
 {
   size_t dist = static_cast<size_t>(std::distance(first, last));
 
@@ -35,4 +34,4 @@ RandomIt exponential_search(
   return last;
 }
 
-} /* ftm */
+}  // namespace ftm
