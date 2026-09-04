@@ -1,0 +1,36 @@
+BasedOnStyle: Google
+
+Standard: c++20
+
+# alignment and indents
+IndentWidth: 2
+ColumnLimit: 80
+UseTab: Never
+
+# braces
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterFunction: true
+  AfterControlStatement: false
+  AfterClass: false
+  AfterStruct: false
+  AfterEnum: false
+
+# pointer '*'-sign alignment
+PointerAlignment: Left
+
+# functions: parameters, arguments, templates
+BinPackParameters: false
+BinPackArguments: false
+AlwaysBreakTemplateDeclarations: true
+AllowAllParametersOfDeclarationOnNextLine: true
+
+# includes
+SortIncludes: true
+IncludeCategories:
+  - Regex:           '^<.*\.hpp>'
+    Priority:        1
+  - Regex:           '^<.*>'
+    Priority:        2
+  - Regex:           '^".*"'
+    Priority:        3
